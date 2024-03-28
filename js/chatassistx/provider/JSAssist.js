@@ -1,7 +1,7 @@
 (function(window) {
 	var args_test = {};
 	args_test.nickname = "JSAssistNick";
-	args_test.platform = "twitch";
+	args_test.platform = "chzzk";
 	args_test.message = "JSAssist driver is working fine";
 	
 	var provider_name = "JSAssist";
@@ -31,9 +31,9 @@
 	}
 	
 	if (typeof window.ChatAssistX.provider[provider_name] !== 'undefined') {
-		console.log("Twitch(tmijs) provider is already loaded!");
+		console.log("chzzk provider is already loaded!");
 	} else {
-		console.log("Twitch(tmijs) driver is loading2");
+		console.log("chzzk driver is loading2");
         // 1. nvrChannel을 이용하여 첫 번째 API 호출
         var xhr1 = new XMLHttpRequest();
 		const nvrChannel = window.ChatAssistX.config.nvrChannel;
@@ -129,7 +129,7 @@
 										data.rawprint = false;
 										data.nickname = profile['nickname'].htmlEntities();
 										data.message = chat.msg.htmlEntities();
-										data.platform = "twitch";
+										data.platform = "chzzk";
 										console.log(data);
 										window.ChatAssistX.addChatMessage(data);
 									}
@@ -161,7 +161,7 @@
 			};
 			
 			if (typeof plugin_config.login === 'undefined' || plugin_config.login === "" || typeof plugin_config.oauth === 'undefined' || plugin_config.oauth === "") {
-				window.ChatAssistX.addNotice("Cannot connect to twitch - missing login information", "system");
+				window.ChatAssistX.addNotice("Cannot connect to chzzk - missing login information", "system");
 			}
 			
 			client = new tmi.Client({
@@ -182,7 +182,7 @@
 			});
 			
 			client.on("connected", (address, port) => {
-                        	console.log("Twitch inited");
+                        	console.log("chzzk inited");
                     	});
 			
 			client.on("message", function(channel, userstate, message, self) {
@@ -195,7 +195,7 @@
 				data.nickname = userstate["display-name"];
 				data.message = message.trim();
 				data.color = userstate.color;
-				data.platform = "twitch";
+				data.platform = "chzzk";
 				if(userstate['emotes-raw'] !== null) data.emotes = userstate['emotes-raw'];
 				
 				data.room_id = userstate["room-id"];
@@ -223,7 +223,7 @@
 			return true;
 		};
 		
-		window.ChatAssistX.addNotice("Twitch(tmijs) Provider " + version + " loading...","system");
+		window.ChatAssistX.addNotice("chzzk Provider " + version + " loading...","system");
 		
 	}
 })(window);
