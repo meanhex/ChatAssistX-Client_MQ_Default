@@ -5,7 +5,7 @@
 	args_test.message = "JSAssist driver is working fine";
 	
 	var provider_name = "JSAssist";
-	var version = "v1.1.0";
+	var version = "v1.1.1";
 	var fail_count = 0;
 	var ignore_chzzk = true;
 	var plugin_config;
@@ -135,13 +135,16 @@
 										console.log(chat.msg.htmlEntities());
 										var data = {};
 													
-										data.isStreamer = false;
-										data.isMod = false;
+										// data.isStreamer = false;
+										// data.isMod = false;
+										data.isStreamer = ext_args.isStreamer;
+										data.isMod = ext_args.isMod;
 										data.rawprint = false;
 										data.nickname = profile['nickname'].htmlEntities();
 										data.message = chat.msg.htmlEntities();
 										data.platform = "chzzk";
 
+										
 										window.ChatAssistX.addChatMessage(data);
 									}
 								}
