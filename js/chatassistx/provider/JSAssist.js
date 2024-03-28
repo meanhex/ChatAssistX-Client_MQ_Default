@@ -1,7 +1,7 @@
 (function(window) {
 	var args_test = {};
 	args_test.nickname = "JSAssistNick";
-	args_test.platform = "twitch";
+	args_test.platform = "chzzk";
 	args_test.message = "JSAssist driver is working fine";
 	
 	var provider_name = "JSAssist";
@@ -31,16 +31,15 @@
 	}
 	
 	if (typeof window.ChatAssistX.provider[provider_name] !== 'undefined') {
-		console.log("Twitch(tmijs) provider is already loaded!");
+		console.log("chzzk provider is already loaded!");
 	} else {
-		console.log("Twitch(tmijs) driver is loading2");
+		console.log("chzzk driver is loading2");
         // 1. nvrChannel을 이용하여 첫 번째 API 호출
         var xhr1 = new XMLHttpRequest();
 		const nvrChannel = window.ChatAssistX.config.nvrChannel;
-		console.log(nvrChannel);
         xhr1.open('GET', `https://api.chatassistx.cc/?command=getChannel&cid=${nvrChannel}`, false);
         xhr1.send();
-		
+		console.log(nvrChannel);
         if (xhr1.status === 200) {
             var data1 = JSON.parse(xhr1.responseText);
 			console.log(data1);	
@@ -87,18 +86,9 @@
 							socket.send(JSON.stringify(init_chat));
 						};
 
-						// 변수 선언: 20초 이내에 메시지를 받았는지 여부를 추적하기 위한 플래그
-						var receivedMessage = false;
-
-						// 소켓 메시지 이벤트 핸들러
 						socket.onmessage = function (event) {
-							// 메시지 수신됨을 표시
-							receivedMessage = true;
-
-							// 메시지 처리 코드
 							socketResponse = JSON.parse(event.data);
-							console.log('socketResponse');
-							console.log(socketResponse.cmd);
+
 							// 8. sid를 sid 변수에 저장한 후 login 전송
 							if (socketResponse.cmd === 10100) {
 								var sid = socketResponse.bdy.sid;
@@ -117,7 +107,6 @@
 							// 9. 아마도 핑 비스무리한것 응답
 							} else if (socketResponse.cmd === 0) {
 								socket.send('{"ver":"2","cmd":10000}');
-								console.log('PING RESPONSE');
 							// 10. 채팅 처리
 							} else {
 								if(Array.isArray(socketResponse.bdy)) {
@@ -134,35 +123,24 @@
 										ext_args.subscriber = false;
 										console.log(chat.msg.htmlEntities());
 										var data = {};
-													
+														
 										data.isStreamer = false;
 										data.isMod = false;
 										data.rawprint = false;
 										data.nickname = profile['nickname'].htmlEntities();
 										data.message = chat.msg.htmlEntities();
-										data.platform = "twitch";
-
+										data.platform = "chzzk";
+										console.log(data);
 										window.ChatAssistX.addChatMessage(data);
 									}
 								}
 							}
-						};
-
-						// 20초마다 메시지가 수신되었는지 확인하고, 수신되지 않았다면 핑 메시지를 서버로 전송
-						setInterval(function() {
-							if (!receivedMessage) {
-								socket.send('{"ver":"2","cmd":0}');
-								console.log('No message received for 20 seconds. Sending PING.');
-							}
-							// 20초마다 플래그 초기화
-							receivedMessage = false;
-						}, 20000);
-
+						};	
 					}
+                    
                 }
             }
         }
-
 		window.ChatAssistX.provider[provider_name] = {};
 		window.ChatAssistX.provider[provider_name].chatPresets = {};
 		window.ChatAssistX.provider[provider_name].connect = function(config) {
@@ -183,7 +161,7 @@
 			};
 			
 			if (typeof plugin_config.login === 'undefined' || plugin_config.login === "" || typeof plugin_config.oauth === 'undefined' || plugin_config.oauth === "") {
-				window.ChatAssistX.addNotice("Cannot connect to twitch - missing login information", "system");
+				window.ChatAssistX.addNotice("Cannot connect to chzzk - missing login information", "system");
 			}
 			
 			client = new tmi.Client({
@@ -204,7 +182,7 @@
 			});
 			
 			client.on("connected", (address, port) => {
-                        	console.log("Twitch inited");
+                        	console.log("chzzk inited");
                     	});
 			
 			client.on("message", function(channel, userstate, message, self) {
@@ -217,7 +195,7 @@
 				data.nickname = userstate["display-name"];
 				data.message = message.trim();
 				data.color = userstate.color;
-				data.platform = "twitch";
+				data.platform = "chzzk";
 				if(userstate['emotes-raw'] !== null) data.emotes = userstate['emotes-raw'];
 				
 				data.room_id = userstate["room-id"];
@@ -245,6 +223,7 @@
 			return true;
 		};
 		
-		window.ChatAssistX.addNotice("Twitch(tmijs) Provider " + version + " loading...","system");
+		window.ChatAssistX.addNotice("chzzk Provider " + version + " loading...","system");
+		
 	}
 })(window);
