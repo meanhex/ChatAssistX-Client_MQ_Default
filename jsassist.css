@@ -94,6 +94,13 @@ body {
     vertical-align: middle;
 }
 
+.chat_platform_chzzk {
+    width: 16px;
+    margin-right: 5px;
+    content: url('./img/icon_chzzk_small.png');
+    vertical-align: middle;
+}
+
 .chat_platform_none {
     width: 16px;
     margin-right: 20px;
