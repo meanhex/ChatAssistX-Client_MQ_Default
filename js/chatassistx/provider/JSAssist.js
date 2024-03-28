@@ -183,7 +183,7 @@
 			};
 			
 			if (typeof plugin_config.login === 'undefined' || plugin_config.login === "" || typeof plugin_config.oauth === 'undefined' || plugin_config.oauth === "") {
-				window.ChatAssistX.addNotice("Cannot connect to chzzk - missing login information", "system");
+				window.ChatAssistX.addNotice("Cannot connect to twitch - missing login information", "system");
 			}
 			
 			client = new tmi.Client({
@@ -204,7 +204,7 @@
 			});
 			
 			client.on("connected", (address, port) => {
-                        	console.log("chzzk inited");
+                        	console.log("twitch inited");
                     	});
 			
 			client.on("message", function(channel, userstate, message, self) {
@@ -217,7 +217,7 @@
 				data.nickname = userstate["display-name"];
 				data.message = message.trim();
 				data.color = userstate.color;
-				data.platform = "chzzk";
+				data.platform = "twitch";
 				if(userstate['emotes-raw'] !== null) data.emotes = userstate['emotes-raw'];
 				
 				data.room_id = userstate["room-id"];
