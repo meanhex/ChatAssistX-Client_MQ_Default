@@ -19,7 +19,7 @@
 
 	window.chat = {};
 	window.ChatAssistX = {};
-	window.ChatAssistX.version = "2.0.6";
+	window.ChatAssistX.version = "2.0.7";
 	window.ChatAssistX.plugins = [];
 	window.ChatAssistX.plugin_count = 0;
 	window.ChatAssistX.loaded_plugin_count = 0;
@@ -204,7 +204,6 @@
 				if (id === "custom_badge"){
 					var custom_badge = list[id].process(args, plugin_configs[id].config);
 					if(!!custom_badge) {
-						args.isMod = true;
 						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 					}
 				} else{
