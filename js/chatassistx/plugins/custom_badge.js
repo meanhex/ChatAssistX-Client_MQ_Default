@@ -28,7 +28,9 @@
 				// 닉네임이 있을때
 				if (nickname === findword){
 					console.log("custom_badge user : " + args.nickname);
-					nickname = '<img style="vertical-align: middle; width: 18px;" src="' + config.custom_badge_list[findword] + '" alt="Broadcaster" class="badge">&nbsp;' + nickname;
+					var badge = config.custom_badge_list[findword]
+					console.log("custom_badge badge : " + badge);
+					nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge + '" alt="Broadcaster" class="badge">&nbsp;' + nickname;
 				}
 			}
 			
