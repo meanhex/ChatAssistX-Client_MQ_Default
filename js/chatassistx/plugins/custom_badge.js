@@ -23,9 +23,11 @@
 				console.warn("custom_badge_list should be array, not string.");
 			}
 			
+			console.log("custom_badge plugin is run");
 			for(var findword in config.custom_badge_list) {
 				// 닉네임이 있을때
 				if (nickname === findword){
+					console.log("custom_badge user : " + args.nickname);
 					nickname = '<img style="vertical-align: middle; width: 18px;" src="' + config.custom_badge_list[findword] + '" alt="Broadcaster" class="badge">&nbsp;' + nickname;
 				}
 			}
