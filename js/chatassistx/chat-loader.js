@@ -3,7 +3,7 @@
  *  / /   / __ \/ __ `/ __/ /| | / ___/ ___/ / ___/ __/   / 
  * / /___/ / / / /_/ / /_/ ___ |(__  |__  ) (__  ) /_/   |  
  * \____/_/ /_/\__,_/\__/_/  |_/____/____/_/____/\__/_/|_|  
- *                 V E R S I O N    2.0.5
+ *                 V E R S I O N    2.0.6
  *       Last updated by Lastorder-DC on 2022-09-24.
  */
 
@@ -19,7 +19,7 @@
 
 	window.chat = {};
 	window.ChatAssistX = {};
-	window.ChatAssistX.version = "2.0.5";
+	window.ChatAssistX.version = "2.0.6";
 	window.ChatAssistX.plugins = [];
 	window.ChatAssistX.plugin_count = 0;
 	window.ChatAssistX.loaded_plugin_count = 0;
@@ -184,15 +184,8 @@
 			if (!window.ChatAssistX.config.chat.platformIcon) {
 				args.platform = "none";
 			}
-			
-			var list = window.ChatAssistX.plugins;
-			for (var id in list) {
-				var parsedMessage = list[id].process(args, plugin_configs[id].config);
-				if(!!parsedMessage) {
-					args.message = parsedMessage;
-				}
-			}
 
+			// 커스텀뱃지 사용을 위해 순서 바꿈
 			if (args.isMod) {
 				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
 				if(badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
@@ -203,6 +196,22 @@
 				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
 				if(badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
+			}
+			
+			var list = window.ChatAssistX.plugins;
+			for (var id in list) {
+				// 커스텀뱃지는 닉네임을 대체해야되서 조건 추가
+				if (id === "custom_badge"){
+					var parsedNickname = list[id].process(args, plugin_configs[id].config);
+					if(!!parsedNickname) {
+						args.nickname = parsedNickname;
+					}
+				} else{
+					var parsedMessage = list[id].process(args, plugin_configs[id].config);
+					if(!!parsedMessage) {
+						args.message = parsedMessage;
+					}
+				}
 			}
 			
 			// 명령어 입력은 스킵함
