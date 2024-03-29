@@ -31,6 +31,7 @@
 					console.log("custom_badge user : " + args.nickname);
 					badge = config.custom_badge_list[findword];
 					console.log("custom_badge badge : " + badge);
+					badge = badge.replace('\'', '\\\'');
 				}
 			}
 			
