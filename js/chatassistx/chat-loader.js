@@ -202,9 +202,9 @@
 			for (var id in list) {
 				// 커스텀뱃지는 닉네임을 대체해야되서 조건 추가
 				if (id === "custom_badge"){
-					var parsedNickname = list[id].process(args, plugin_configs[id].config);
-					if(!!parsedNickname) {
-						args.nickname = parsedNickname;
+					var custom_badge = list[id].process(args, plugin_configs[id].config);
+					if(!!custom_badge) {
+						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 					}
 				} else{
 					var parsedMessage = list[id].process(args, plugin_configs[id].config);
