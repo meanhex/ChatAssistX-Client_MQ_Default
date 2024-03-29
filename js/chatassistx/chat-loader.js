@@ -167,7 +167,8 @@
 				}
 			}
 		}
-		
+		var tempMessage = args.message;
+		console.log("original message = " + tempMessage);
 		if (args.rawprint) {
 			// 강제개행 문법만 변환
 			args.message = args.message.replace(/\[br\]/g, "<br />");
@@ -185,7 +186,6 @@
 				args.platform = "none";
 			}
 
-			// 커스텀뱃지 사용을 위해 순서 바꿈
 			if (args.isMod) {
 				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
 				if(badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
@@ -216,7 +216,9 @@
 			}
 			
 			// 명령어 입력은 스킵함
-			if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
+			// if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
+			
+			if (args.message.indexOf("DO_NOT_PRINT") !== -1) args.message = tempMessage;
 		}
 
 		chat = {
