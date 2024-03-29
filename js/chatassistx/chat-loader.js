@@ -19,7 +19,7 @@
 
 	window.chat = {};
 	window.ChatAssistX = {};
-	window.ChatAssistX.version = "2.0.7";
+	window.ChatAssistX.version = "2.0.6";
 	window.ChatAssistX.plugins = [];
 	window.ChatAssistX.plugin_count = 0;
 	window.ChatAssistX.loaded_plugin_count = 0;
@@ -168,7 +168,6 @@
 			}
 		}
 		var tempMessage = args.message;
-		console.log("original message = " + tempMessage);
 		if (args.rawprint) {
 			// 강제개행 문법만 변환
 			args.message = args.message.replace(/\[br\]/g, "<br />");
@@ -185,19 +184,8 @@
 			if (!window.ChatAssistX.config.chat.platformIcon) {
 				args.platform = "none";
 			}
-
-			if (args.isMod) {
-				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
-				if(badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
-				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_moderator + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
-			}
 			
-			if (args.isStreamer || isStreamer(args.platform, args.nickname)) {
-				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
-				if(badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
-				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
-			}
-			
+			var originalNickname = args.nickname;
 			var list = window.ChatAssistX.plugins;
 			for (var id in list) {
 				// 커스텀뱃지는 닉네임을 대체해야되서 조건 추가
@@ -212,6 +200,18 @@
 						args.message = parsedMessage;
 					}
 				}
+			}
+			
+			if (args.isMod) {
+				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
+				if(badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
+				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_moderator + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
+			}
+			
+			if (args.isStreamer || isStreamer(args.platform, originalNickname)) {
+				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
+				if(badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
+				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
 			
 			// 명령어 입력은 스킵함
