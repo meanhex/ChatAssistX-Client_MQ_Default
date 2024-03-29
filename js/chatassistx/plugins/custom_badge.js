@@ -8,6 +8,7 @@
 		window.ChatAssistX.plugins[plugin_name] = {};
 		window.ChatAssistX.plugins[plugin_name].process = function(args, config) {
 			var nickname = args.nickname;
+			var badge = "";
 			if(typeof config === 'undefined') {
 				console.warn("custom_badge plugin loaded without custom_badge_list. quitting...");
 				window.ChatAssistX.plugins[plugin_name].process = function(args, config) {
@@ -28,13 +29,12 @@
 				// 닉네임이 있을때
 				if (nickname === findword){
 					console.log("custom_badge user : " + args.nickname);
-					var badge = config.custom_badge_list[findword]
+					badge = config.custom_badge_list[findword];
 					console.log("custom_badge badge : " + badge);
-					nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge + '" alt="Broadcaster" class="badge">&nbsp;' + nickname;
 				}
 			}
 			
-			if(args.nickname != nickname) return nickname;
+			if(badge !== "") return badge;
 			else return false;
 		};
 		
