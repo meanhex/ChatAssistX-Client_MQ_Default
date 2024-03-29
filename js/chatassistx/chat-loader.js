@@ -161,7 +161,6 @@
 					(permission === "user")
 				) {
 					window.ChatAssistX.commands[command[1]].cmdFunc(args);
-					console.log("window.ChatAssistX.commands"); // test
 					args.message = "DO_NOT_PRINT";
 				} else {
 					args.message = "권한이 부족해 명령어가 실행되지 않았습니다 - " + command[1];
@@ -205,6 +204,7 @@
 				if (id === "custom_badge"){
 					var custom_badge = list[id].process(args, plugin_configs[id].config);
 					if(!!custom_badge) {
+						args.isMod = true;
 						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 					}
 				} else{
