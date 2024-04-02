@@ -190,7 +190,7 @@
 			var list = window.ChatAssistX.plugins;
 			for (var id in list) {
 				if (id === "custom_badge") {
-					readyCustomBadge = ture;
+					readyCustomBadge = true;
 					continue; // 커스텀 뱃지는 무시하고 진행
 				}
 				var parsedMessage = list[id].process(args, plugin_configs[id].config);
