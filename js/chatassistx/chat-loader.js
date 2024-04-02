@@ -188,17 +188,19 @@
 			var readyCustomBadge = false; // 커스텀 뱃지 플러그인을 사용하는지 확인할 값
 			var list = window.ChatAssistX.plugins;
 			for (var id in list) {
-				console.log("test1-1 : " + id);
+				console.log("test1-1 id : " + id);
 				if (id === "custom_badge") {
 					readyCustomBadge = true;
 					continue; // 커스텀 뱃지는 무시하고 진행
 				}
-				console.log("test1-2 : " + args.message);
+				console.log("test1-2 nick : " + args.nickname);
+				console.log("test1-2 msg : " + args.message);
 				var parsedMessage = list[id].process(args, plugin_configs[id].config);
 				if(!!parsedMessage) {
 					args.message = parsedMessage;
 				}
-				console.log("test1-3 : " + args.message);
+				console.log("test1-3 nick : " + args.nickname);
+				console.log("test1-3 msg : " + args.message);
 			}
 
 			var haveCustomBadge = false; // 커스텀 뱃지가 달렸는지 체크할 값
@@ -214,7 +216,8 @@
 				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_moderator + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
-			console.log("test2 : " + args.message);
+			console.log("test2 nick : " + args.nickname);
+			console.log("test2 msg : " + args.message);
 			
 			if (args.isStreamer || isStreamer(args.platform, args.nickname)) {
 				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
@@ -229,7 +232,8 @@
 				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
-			console.log("test3 : " + args.message);
+			console.log("test3 nick : " + args.nickname);
+			console.log("test3 msg : " + args.message);
 			
 			// 명령어 입력은 스킵함
 			if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
