@@ -3,7 +3,7 @@
  *  / /   / __ \/ __ `/ __/ /| | / ___/ ___/ / ___/ __/   / 
  * / /___/ / / / /_/ / /_/ ___ |(__  |__  ) (__  ) /_/   |  
  * \____/_/ /_/\__,_/\__/_/  |_/____/____/_/____/\__/_/|_|  
- *                 V E R S I O N    2.0.7
+ *                 V E R S I O N    2.1.0
  *       Last updated by Lastorder-DC on 2022-09-24.
  */
 
@@ -19,7 +19,7 @@
 
 	window.chat = {};
 	window.ChatAssistX = {};
-	window.ChatAssistX.version = "2.0.7";
+	window.ChatAssistX.version = "2.1.0";
 	window.ChatAssistX.plugins = [];
 	window.ChatAssistX.plugin_count = 0;
 	window.ChatAssistX.loaded_plugin_count = 0;
@@ -185,48 +185,50 @@
 			if (!window.ChatAssistX.config.chat.platformIcon) {
 				args.platform = "none";
 			}
-			console.log("test2~~ : " + args.message);
 			
-			var originalNickname = args.nickname;
+			var readyCustomBadge = false; // 커스텀 뱃지 플러그인을 사용하는지 확인할 값
 			var list = window.ChatAssistX.plugins;
 			for (var id in list) {
-				// 커스텀뱃지는 닉네임을 대체해야되서 조건 추가
-				if (id === "custom_badge"){
-					console.log("test2-1-1~~ : " + args.message);
-					var custom_badge = list[id].process(args, plugin_configs[id].config);
-					if(!!custom_badge) {
-						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
-					}
-					console.log("test2-1-2~~ : " + args.message);
-				} else{
-					console.log("test2-2-1~~ : " + args.message);
-					var parsedMessage = list[id].process(args, plugin_configs[id].config);
-					if(!!parsedMessage) {
-						args.message = parsedMessage;
-					}
-					console.log("test2-2-2~~ : " + args.message);
+				if (id === "custom_badge") {
+					readyCustomBadge = ture;
+					continue; // 커스텀 뱃지는 무시하고 진행
+				}
+				var parsedMessage = list[id].process(args, plugin_configs[id].config);
+				if(!!parsedMessage) {
+					args.message = parsedMessage;
 				}
 			}
-			console.log("test3~~ : " + args.message);
-			
+
+			var haveCustomBadge = false; // 커스텀 뱃지가 달렸는지 체크할 값
 			if (args.isMod) {
 				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
-				if(badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
+				if (badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
+				if (readyCustomBadge){
+					var custom_badge = list["custom_badge"].process(args, plugin_configs["custom_badge"].config);
+					if(!!custom_badge) {
+						haveCustomBadge = true;
+						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
+					}
+				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_moderator + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
 			
-			if (args.isStreamer || isStreamer(args.platform, originalNickname)) {
+			if (args.isStreamer || isStreamer(args.platform, args.nickname)) {
 				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
-				if(badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
+				if (badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
+				if (readyCustomBadge === true && haveCustomBadge === false){
+					// 커스텀 뱃지가 아직 안달렸을때
+					var custom_badge = list["custom_badge"].process(args, plugin_configs["custom_badge"].config);
+					if(!!custom_badge) {
+						haveCustomBadge = true;
+						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
+					}
+				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
-			console.log("test4~~ : " + args.message);
 			
 			// 명령어 입력은 스킵함
-			// if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
-			
-			console.log("test5~~ : " + args.message);
-			if (args.message.indexOf("DO_NOT_PRINT") !== -1) args.message = tempMessage;
+			if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
 		}
 
 		chat = {
