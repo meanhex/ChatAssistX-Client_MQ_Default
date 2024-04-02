@@ -185,34 +185,36 @@
 				args.platform = "none";
 			}
 			
-			var readyCustomBadge = false; // 커스텀 뱃지 플러그인을 사용하는지 확인할 값
+			var custom_badge_nick = "";
+			var haveCustomBadge = false; // 커스텀 뱃지가 달렸는지 체크할 값
 			var list = window.ChatAssistX.plugins;
 			for (var id in list) {
-				console.log("test1-1 id : " + id);
+				console.log("test1-1 plugin_id : " + id);
+				console.log("test1-1 nick : " + args.nickname);
+				console.log("test1-1 msg : " + args.message);
 				if (id === "custom_badge") {
-					readyCustomBadge = true;
-					continue; // 커스텀 뱃지는 무시하고 진행
+					var custom_badge = list[id].process(args, plugin_configs[id].config);
+					if(!!custom_badge) {
+						haveCustomBadge = true;
+						custom_badge_nick = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
+					}
+				}
+				else{
+					var parsedMessage = list[id].process(args, plugin_configs[id].config);
+					if(!!parsedMessage) {
+						args.message = parsedMessage;
+					}
 				}
 				console.log("test1-2 nick : " + args.nickname);
 				console.log("test1-2 msg : " + args.message);
-				var parsedMessage = list[id].process(args, plugin_configs[id].config);
-				if(!!parsedMessage) {
-					args.message = parsedMessage;
-				}
-				console.log("test1-3 nick : " + args.nickname);
-				console.log("test1-3 msg : " + args.message);
 			}
 
-			var haveCustomBadge = false; // 커스텀 뱃지가 달렸는지 체크할 값
 			if (args.isMod) {
 				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
 				if (badge_moderator === "") badge_moderator = "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
-				if (readyCustomBadge){
-					var custom_badge = list["custom_badge"].process(args, plugin_configs["custom_badge"].config);
-					if(!!custom_badge) {
-						haveCustomBadge = true;
-						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
-					}
+				if (haveCustomBadge === true && custom_badge_nick !== ""){
+					args.nickname = custom_badge_nick;
+					custom_badge_nick = "";
 				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_moderator + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
@@ -222,13 +224,9 @@
 			if (args.isStreamer || isStreamer(args.platform, args.nickname)) {
 				var badge_streamer = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.streamer;
 				if (badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
-				if (readyCustomBadge === true && haveCustomBadge === false){
-					// 커스텀 뱃지가 아직 안달렸을때
-					var custom_badge = list["custom_badge"].process(args, plugin_configs["custom_badge"].config);
-					if(!!custom_badge) {
-						haveCustomBadge = true;
-						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
-					}
+				if (haveCustomBadge === true && custom_badge_nick !== ""){
+					args.nickname = custom_badge_nick;
+					custom_badge_nick = "";
 				}
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
