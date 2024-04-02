@@ -192,15 +192,19 @@
 			for (var id in list) {
 				// 커스텀뱃지는 닉네임을 대체해야되서 조건 추가
 				if (id === "custom_badge"){
+					console.log("test2-1-1~~ : " + args.message);
 					var custom_badge = list[id].process(args, plugin_configs[id].config);
 					if(!!custom_badge) {
 						args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + custom_badge + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 					}
+					console.log("test2-1-2~~ : " + args.message);
 				} else{
+					console.log("test2-2-1~~ : " + args.message);
 					var parsedMessage = list[id].process(args, plugin_configs[id].config);
 					if(!!parsedMessage) {
 						args.message = parsedMessage;
 					}
+					console.log("test2-2-2~~ : " + args.message);
 				}
 			}
 			console.log("test3~~ : " + args.message);
