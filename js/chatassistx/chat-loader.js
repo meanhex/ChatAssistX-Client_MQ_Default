@@ -3,7 +3,7 @@
  *  / /   / __ \/ __ `/ __/ /| | / ___/ ___/ / ___/ __/   / 
  * / /___/ / / / /_/ / /_/ ___ |(__  |__  ) (__  ) /_/   |  
  * \____/_/ /_/\__,_/\__/_/  |_/____/____/_/____/\__/_/|_|  
- *                 V E R S I O N    2.0.6
+ *                 V E R S I O N    2.0.7
  *       Last updated by Lastorder-DC on 2022-09-24.
  */
 
@@ -19,7 +19,7 @@
 
 	window.chat = {};
 	window.ChatAssistX = {};
-	window.ChatAssistX.version = "2.0.6";
+	window.ChatAssistX.version = "2.0.7";
 	window.ChatAssistX.plugins = [];
 	window.ChatAssistX.plugin_count = 0;
 	window.ChatAssistX.loaded_plugin_count = 0;
@@ -167,6 +167,7 @@
 				}
 			}
 		}
+		console.log("test1~~ : " + args.message);
 		var tempMessage = args.message;
 		if (args.rawprint) {
 			// 강제개행 문법만 변환
@@ -184,6 +185,7 @@
 			if (!window.ChatAssistX.config.chat.platformIcon) {
 				args.platform = "none";
 			}
+			console.log("test2~~ : " + args.message);
 			
 			var originalNickname = args.nickname;
 			var list = window.ChatAssistX.plugins;
@@ -201,6 +203,7 @@
 					}
 				}
 			}
+			console.log("test3~~ : " + args.message);
 			
 			if (args.isMod) {
 				var badge_moderator = window.ChatAssistX.config.themes[window.ChatAssistX.config.theme].image.moderator;
@@ -213,10 +216,12 @@
 				if(badge_streamer === "") badge_streamer = "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
 				args.nickname = '<img style="vertical-align: middle; width: 18px;" src="' + badge_streamer + '" alt="Broadcaster" class="badge">&nbsp;' + args.nickname;
 			}
+			console.log("test4~~ : " + args.message);
 			
 			// 명령어 입력은 스킵함
 			// if (args.message.indexOf("DO_NOT_PRINT") !== -1) return;
 			
+			console.log("test5~~ : " + args.message);
 			if (args.message.indexOf("DO_NOT_PRINT") !== -1) args.message = tempMessage;
 		}
 
